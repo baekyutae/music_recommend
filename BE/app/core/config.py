@@ -8,6 +8,8 @@ from typing import Literal
 from pydantic_settings import BaseSettings
 from pydantic import Field
 
+#Field()는 pydantic 라이브러리에서 제공하는 함수이고,
+# pydantic 모델/설정 클래스에서 필드 설정(기본값, 범위, 설명 등)을 할 때 쓰는 함수
 
 class Settings(BaseSettings):
     """Application settings loaded from environment variables"""
@@ -47,13 +49,14 @@ class Settings(BaseSettings):
     AUDIO_EMB_MYNA_PATH: str = Field(default="", description="Myna 오디오 임베딩 경로")
     AUDIO_EMB_CNN_PATH: str = Field(default="", description="CNN 오디오 임베딩 경로")
     
+    # Settings 모델이 환경변수를 어떻게 읽을지 규칙을 알려주는 설정 클래스
     class Config:
-        env_file = ".env"
+        env_file = ".env" # 현재 디렉터리의 .env 파일을 읽어서 환경변수처럼 사용해라
         env_file_encoding = "utf-8"
-        case_sensitive = True
+        case_sensitive = True # 환경변수 이름의 대소문자를 구분
 
-
+# Settings 인스턴스를 돌려주는 함수 
 def get_settings() -> Settings:
-    """Settings 싱글톤 반환"""
+    
     return Settings()
 

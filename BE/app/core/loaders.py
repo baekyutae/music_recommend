@@ -441,6 +441,7 @@ def load_audio_embeddings(
         embeddings = embeddings.astype(np.float32)
         
         # 인덱스 맵 생성
+        # 각 song_id가 embeddings 배열에서 몇 번째 위치인지 알려주는 딕셔너리를 만듬
         song_id_to_idx = {int(sid): idx for idx, sid in enumerate(song_ids)}
         
         logger.info(f"오디오 임베딩 로드 완료: {len(song_ids):,}곡, dim={embeddings.shape[1]}")

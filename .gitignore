@@ -2,3 +2,8 @@
 /mel_shards
 /melon-dataset-excepttar
 /rules
+/study
+.ipynb_checkpoints/
+node_modules/
+.env
+.env.*

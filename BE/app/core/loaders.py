@@ -166,6 +166,11 @@ def load_song_meta_melon(path: str, demo_mode: bool) -> MetaRegistry:
                 elif artist_id_basket:
                     artist_key = str(artist_id_basket)
                 
+                # 중복 song_id 스킵
+                if sid in songs:
+                    logger.debug(f"중복 song_id 스킵: {sid}")
+                    continue
+                
                 meta = SongMeta(
                     song_id=sid,
                     song_name=song_name,
@@ -294,6 +299,11 @@ def load_audio_song_meta(path: str, demo_mode: bool) -> MetaRegistry:
                 issue_year = _parse_year(
                     item.get("issue_year") or item.get("issue_date") or item.get("year")
                 )
+                
+                # 중복 song_id 스킵
+                if sid in songs:
+                    logger.debug(f"중복 song_id 스킵: {sid}")
+                    continue
                 
                 meta = SongMeta(
                     song_id=sid,
@@ -439,6 +449,16 @@ def load_audio_embeddings(
         # 타입 변환
         song_ids = song_ids.astype(np.int64)
         embeddings = embeddings.astype(np.float32)
+        
+        # 검증: 길이 일치 확인
+        if len(song_ids) != embeddings.shape[0]:
+            logger.error(f"song_ids({len(song_ids)})와 embeddings({embeddings.shape[0]}) 길이 불일치")
+            return None
+        
+        # 검증: 2차원 배열 확인
+        if embeddings.ndim != 2:
+            logger.error(f"embeddings가 2차원이 아님: ndim={embeddings.ndim}")
+            return None
         
         # 인덱스 맵 생성
         # 각 song_id가 embeddings 배열에서 몇 번째 위치인지 알려주는 딕셔너리를 만듬
